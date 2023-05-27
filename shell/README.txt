@@ -1,0 +1,1 @@
+In this directory you can find the scripts for downloading the reference, phasing, imputatation, randomise and flipping.
