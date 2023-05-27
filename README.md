@@ -1,4 +1,4 @@
-### Phasing_imputation_analysis
+### Phasing imputation analysis
 Analysis commonly used on genome-wide association studies to test phasing and imputation algorithms with following data visualization of statistical tests on notebooks
 
 #### programs
