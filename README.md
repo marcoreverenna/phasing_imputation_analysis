@@ -1,33 +1,28 @@
-### phasing_imputation_analysis
-Analysis to test first phasing and imputation algorithms with following data visualization of statistical tests on notebooks
+### Phasing_imputation_analysis
+Analysis commonly used on genome-wide association studies to test phasing and imputation algorithms with following data visualization of statistical tests on notebooks
 
-### Imputation using impute2
-Repository to perform genotypic imputation needed to optimize genome wide studies
-#### Reference Programms
-- **1** : SHAPEIT http://www.shapeit.fr/
-- **2** : PLINK https://www.cog-genomics.org/plink2
-- **3** : IMPUTE2 http://mathgen.stats.ox.ac.uk/impute/impute_v2.html
-- **4** : GTOOL http://www.well.ox.ac.uk/~cfreeman/software/gwas/gtool.html
+#### programs
+- *1* : SHAPEIT http://www.shapeit.fr/
+- *2* : PLINK https://www.cog-genomics.org/plink2
+- *3* : IMPUTE2 http://mathgen.stats.ox.ac.uk/impute/impute_v2.html
+- *4* : GTOOL http://www.well.ox.ac.uk/~cfreeman/software/gwas/gtool.html
 - **5** : 1000GP https://mathgen.stats.ox.ac.uk/impute/1000GP_Phase3.html
 
-#### Reference files
+#### reference files
 - **1** : 1000GP_Phase3_chr19.hap.gz
 - **2** : 1000GP_Phase3_chr19.legend.gz
 - **3** : genetic_map_chr19_combined_b37.txt
 - **4** : 1000GP_Phase3.sample
 
-## Imput files
-- **1** : Reference files
-- **2** : Study sample ($FILE_CLEANED.bim/.bed/.fam)
 
-## Step 0: Create a reduced chromosome file
+#### step 1 = create a reduced chromosome file
 Take the file ESERCITAZIONE_CLEANED obtained from the quality control step of the GWAS repository
 ```
     plink_1.9 --bfile ESERCITAZIONE_CLEANED --chr 19 --from-kb 0 --to-kb 5000 --make-bed --out chr_19_ridotto --noweb
 ```
 Please note: if the positions of our SNPs are different from the reference file (1,000 Genomes haplotypes -- Phase 3 NCBI build 37; hg19) it is necessary to fix the SNPs' positions with the tool LiftOver (UCSC, https://genome.ucsc.edu/cgi-bin/hgLiftOver).
 
-## Step 1: Preparing files
+#### step 2 = preparing files
 change from PLINK format (.bed/.bim/.fam) to VCF format
 ```
     plink_1.9 --bfile chr_19_ridotto --recode vcf --noweb
@@ -68,7 +63,7 @@ After flipping the problematic SNPs and producing the new chr19_flip.gen/.sample
 ```
 If there are no more errors proceed with phasing.
 
-## Step 2: Phasing stage
+#### step 3: phasing stage
 ```
     shapeit -G chr19_flip -M genetic_map_chr19_combined_b37.txt -O chr19.phased
 ```
@@ -92,7 +87,3 @@ This conversion can also be done with gtool
 ```
     gtool -G --g Parte1.impute --s chr19_flip.sample --ped final_parte1G.ped --map final_parte1G.map --phenotype phenotype --threshold 0.95
 ```
-
-### Papers
-- Li, Yun, et al. "MaCH: using sequence and genotype data to estimate haplotypes and unobserved genotypes." Genetic epidemiology 34.8 (2010): 816-834.
-- Howie, Bryan N., Peter Donnelly, and Jonathan Marchini. "A flexible and accurate genotype imputation method for the next generation of genome-wide association studies." PLoS genetics 5.6 (2009): e1000529.
