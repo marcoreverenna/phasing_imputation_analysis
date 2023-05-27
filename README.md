@@ -2,27 +2,27 @@
 Analysis commonly used on genome-wide association studies to test phasing and imputation algorithms with following data visualization of statistical tests on notebooks
 
 #### programs
-- *1* : SHAPEIT http://www.shapeit.fr/
-- *2* : PLINK https://www.cog-genomics.org/plink2
-- *3* : IMPUTE2 http://mathgen.stats.ox.ac.uk/impute/impute_v2.html
-- *4* : GTOOL http://www.well.ox.ac.uk/~cfreeman/software/gwas/gtool.html
-- **5** : 1000GP https://mathgen.stats.ox.ac.uk/impute/1000GP_Phase3.html
+- *1*. Shapeit = http://www.shapeit.fr/
+- *2*. Plink = https://www.cog-genomics.org/plink2
+- *3*. IMPUTE2 http://mathgen.stats.ox.ac.uk/impute/impute_v2.html
+- *4*. gtool = http://www.well.ox.ac.uk/~cfreeman/software/gwas/gtool.html
+- *5*. 1000GP = https://mathgen.stats.ox.ac.uk/impute/1000GP_Phase3.html
 
 #### reference files
-- **1** : 1000GP_Phase3_chr19.hap.gz
-- **2** : 1000GP_Phase3_chr19.legend.gz
-- **3** : genetic_map_chr19_combined_b37.txt
-- **4** : 1000GP_Phase3.sample
+- *1*. 1000GP_Phase3_chr19.hap.gz
+- *2*. 1000GP_Phase3_chr19.legend.gz
+- *3*. genetic_map_chr19_combined_b37.txt
+- *4*. 1000GP_Phase3.sample
 
-
-#### step 1 = create a reduced chromosome file
+### Analysis workflow
+#### STEP 1 = create a reduced chromosome file
 Take the file ESERCITAZIONE_CLEANED obtained from the quality control step of the GWAS repository
 ```
     plink_1.9 --bfile ESERCITAZIONE_CLEANED --chr 19 --from-kb 0 --to-kb 5000 --make-bed --out chr_19_ridotto --noweb
 ```
 Please note: if the positions of our SNPs are different from the reference file (1,000 Genomes haplotypes -- Phase 3 NCBI build 37; hg19) it is necessary to fix the SNPs' positions with the tool LiftOver (UCSC, https://genome.ucsc.edu/cgi-bin/hgLiftOver).
 
-#### step 2 = preparing files
+#### STEP 2 = preparing files
 change from PLINK format (.bed/.bim/.fam) to VCF format
 ```
     plink_1.9 --bfile chr_19_ridotto --recode vcf --noweb
@@ -63,7 +63,7 @@ After flipping the problematic SNPs and producing the new chr19_flip.gen/.sample
 ```
 If there are no more errors proceed with phasing.
 
-#### step 3: phasing stage
+#### STEP 3: phasing stage
 ```
     shapeit -G chr19_flip -M genetic_map_chr19_combined_b37.txt -O chr19.phased
 ```
