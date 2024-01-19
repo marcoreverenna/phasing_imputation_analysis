@@ -1,28 +1,31 @@
-### Phasing imputation analysis
-Analysis commonly used on genome-wide association studies to test phasing and imputation algorithms with following data visualization of statistical tests on notebooks
+## Phasing and imputation analysis
 
-#### programs
-- *1*. Shapeit = http://www.shapeit.fr/
-- *2*. Plink = https://www.cog-genomics.org/plink2
-- *3*. IMPUTE2 http://mathgen.stats.ox.ac.uk/impute/impute_v2.html
-- *4*. gtool = http://www.well.ox.ac.uk/~cfreeman/software/gwas/gtool.html
-- *5*. 1000GP = https://mathgen.stats.ox.ac.uk/impute/1000GP_Phase3.html
+<p align="left"> 
+    <br>Analysis used on genome-wide association studies to test phasing and imputation algorithms with following data visualization of statistical tests on notebooks
+</p>
 
-#### reference files
-- *1*. 1000GP_Phase3_chr19.hap.gz
-- *2*. 1000GP_Phase3_chr19.legend.gz
-- *3*. genetic_map_chr19_combined_b37.txt
-- *4*. 1000GP_Phase3.sample
+---
 
-### Analysis workflow
-#### STEP 1 = create a reduced chromosome file
+## Table of contents
+- [About](#about)
+- [Getting Started](#getting_started)
+- [Repository structure](#repository_structure)
+- [References](#references)
+- [Authors](#authors)
+- [Acknowledgments](#acknowledgement)
+
+### About <a name = "about"></a>
+This is a repository for genome-wide association studies (GWAS) analysis, focusing mainly on phasing and imputation. We've put together this space to test and compare different algorithms.
+
+### Getting started <a name = "getting_started"></a>
+#### Create a reduced chromosome file
 Take the file ESERCITAZIONE_CLEANED obtained from the quality control step of the GWAS repository
 ```
     plink_1.9 --bfile ESERCITAZIONE_CLEANED --chr 19 --from-kb 0 --to-kb 5000 --make-bed --out chr_19_ridotto --noweb
 ```
 Please note: if the positions of our SNPs are different from the reference file (1,000 Genomes haplotypes -- Phase 3 NCBI build 37; hg19) it is necessary to fix the SNPs' positions with the tool LiftOver (UCSC, https://genome.ucsc.edu/cgi-bin/hgLiftOver).
 
-#### STEP 2 = preparing files
+#### Preparing files
 change from PLINK format (.bed/.bim/.fam) to VCF format
 ```
     plink_1.9 --bfile chr_19_ridotto --recode vcf --noweb
@@ -63,7 +66,7 @@ After flipping the problematic SNPs and producing the new chr19_flip.gen/.sample
 ```
 If there are no more errors proceed with phasing.
 
-#### STEP 3: phasing stage
+#### Phasing stage
 ```
     shapeit -G chr19_flip -M genetic_map_chr19_combined_b37.txt -O chr19.phased
 ```
@@ -83,7 +86,30 @@ Finally, convert the Parte1.impute into the .map and .ped files
 ```
     plink_1.9 --gen Parte1.impute --sample chr19_flip.sample --hard-call-threshold 0.05 --recode --out final_parte1
 ```
+
+### Repository structure <a name = "repository_structure"></a>
+The table below provides an overview of the key files and directories in this repository, along with a brief description of each.
+|File  |Description            |
+|:----:|-----------------------|
+|[1000GP_Phase3_chr19.hap.gz]()|...|
+|[1000GP_Phase3_chr19.legend.gz]()|...|
+|[genetic_map_chr19_combined_b37.txt]()|...|
+|[1000GP_Phase3.sample]()|...|
+
+### References <a name = "references"></a>
+- [Shapeit](http://www.shapeit.fr/) - phasing program
+- [Plink](https://www.cog-genomics.org/plink2) - genetic multi-tool
+- [IMPUTE2](http://mathgen.stats.ox.ac.uk/impute/impute_v2.html) imputation algorithm
+- [gtool](http://www.well.ox.ac.uk/~cfreeman/software/gwas/gtool.html) -
+- [1000GP](https://mathgen.stats.ox.ac.uk/impute/1000GP_Phase3.html) -
+
+
 This conversion can also be done with gtool
 ```
     gtool -G --g Parte1.impute --s chr19_flip.sample --ped final_parte1G.ped --map final_parte1G.map --phenotype phenotype --threshold 0.95
 ```
+## Authors <a name = "authors"></a>
+- [@marcoreverenna](https://github.com/marcoreverenna) -
+  
+## Acknowledgements <a name = "acknowledgement"></a>
+I would like to extend my heartfelt gratitude to [Igenomix Italy](https://www.igenomix.it) for providing the essential support that has been fundamental for the development and success of the team.
